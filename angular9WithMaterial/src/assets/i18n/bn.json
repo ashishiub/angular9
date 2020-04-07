@@ -1,0 +1,15 @@
+{
+    "DepositMethod": "আমানতের পদ্ধতি",
+    "DepositType": "আমানতের ধরণ",
+    "DonationBy": "দানকারী",
+    "StudentId": "ছাত্রের পরিচয় নং",
+    "Amount": "পরিমাণ",
+    "Cash": "নগদ",
+    "Card": "কার্ড",
+    "Check": "চেক",
+    "Select": "বাছুন",
+    "Reset": "মুছে দিন",
+    "Submit": "জমা দিন",
+    "Donation": "দান",
+    "StudentPayment": "ছাত্রের ফি"
+}

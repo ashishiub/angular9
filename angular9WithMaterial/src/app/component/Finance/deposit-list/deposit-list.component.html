@@ -1,0 +1,277 @@
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<h2>Deposit List</h2>
+<div class="test-header">
+    <div class="row">
+        <div class="col-sm-1"></div>
+        <div class="col-sm-3">
+            <label>Deposit Method:</label>
+            <select style="width: 80px;" [(ngModel)]=depositMethod>
+                <option value="Select" selected="">Select</option>
+                <option value="Cash">Cash</option>
+                <option value="Check">Check</option>
+                <option value="Card">Card</option>
+            </select>
+        </div>
+        <div class="col-sm-3">
+            <label style="width: 80px;" >Date From:</label>
+            <input type="date" style="width: 140px;"  id="dateFrom" name="dateFrom" [(ngModel)]=queryModel.dateFrom>
+        </div>
+        <div class="col-sm-3">
+            <label>Amount &gt; :</label>
+            <input type="text" style="width: 100px;" id="amountLess" name="amountLess" [(ngModel)]=queryModel.amountLess>    
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-1"></div>
+        <div class="col-sm-3">
+            <label>Deposit Type:</label>
+            <select style="width: 100px;" [(ngModel)]=depositType>
+                <option value="Select" selected="">Select</option>
+                <option value="Donation">Donation</option>
+                <option value="Student Payment">Student Payment</option>
+            </select>
+        </div>
+        <div class="col-sm-3">
+            <label style="width: 80px;" >Date To:</label>
+            <input type="date" style="width: 140px;" id="dateTo" name="dateTo" [(ngModel)]=queryModel.dateTo>    
+        </div>
+        <div class="col-sm-3">
+            <label>Amount &lt; :</label>
+            <input type="text" style="width: 100px;" id="amountMore" name="amountMore" [(ngModel)]=queryModel.amountMore>
+        </div>
+        
+        <div class="col-sm-2">
+            <button (click)="refresh()">Show Deposit List</button>
+        </div>
+    </div>
+
+    <div style="color: red;">
+        <div *ngIf="!dateValid">
+            Date From cannot be greater than Date To.
+        </div>
+        <div *ngIf="!isAmountLessInNumber">
+            Value entered for "Amount &gt;" is not valid.
+        </div>
+        <div *ngIf="!isAmountLessPositive">
+            Value entered for "Amount &gt;" is not valid.
+        </div>
+        <div *ngIf="!isAmountMoreInNumber">
+            Value entered for "Amount &lt;" is not valid.
+        </div>
+        <div *ngIf="!isAmountMorePositive">
+            Value entered for "Amount &lt;" is not valid.
+        </div>
+        <div *ngIf="!amountValid">
+            Value entered for "Amount &gt;" cannot be greater than "Amount &lt;"
+        </div>
+    </div>
+
+    
+
+
+    <!-- <div>
+        <ag-grid-angular style="text-align: justify; width: 100%; height: 100%;" class="ag-theme-balham"
+            (gridReady)="onGridReady($event)" [rowData]="rowData | async" [gridOptions]="gridOptions"></ag-grid-angular>
+    </div> -->
+
+
+    
+<div class="row">
+    <div class="col-1"></div>
+    <div class="col-1.5">
+        <div class="form-group">
+            <label for="itemsPerPage" *ngIf="isNextShow">Items Per Page:</label>
+            
+        </div>
+    </div>
+    <div class="col-1.5">
+        <div class="form-group">
+            <select id="itemsPerPage" class="form-control form-control-sm" [(ngModel)]="config.itemsPerPage" *ngIf="isNextShow">
+                <option value="10">10</option>
+                <option value="15">15</option>
+                <option value="20">20</option>
+            </select>
+        </div>
+    </div>
+    <div class="col-5"></div>
+    <div class="col-3" style="text-align: right;" *ngIf="isNextShow"><pagination-controls [id]="config.id" (pageChange)="onPageChange($event)"></pagination-controls></div>
+</div>
+    <div class="col-md-12">
+        <div class="table-responsive" *ngIf="deposit">
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th style="font-size: smaller;" scope="col">#</th>
+                        <th style="font-size: smaller;" scope="col">Deposit Method</th>
+                        <th style="font-size: smaller;" scope="col">Deposit Type</th>
+                        <th style="font-size: smaller;" scope="col">Donation By</th>
+                        <th style="font-size: smaller;" scope="col">Student Id</th>
+                        <th style="font-size: smaller;" scope="col">Amount</th>
+                        <th style="font-size: smaller;" scope="col">Deposit Date</th>
+                        <th style="font-size: smaller;" scope="col">Options</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="height: 1em" *ngFor="let data of deposit  | paginate: config; let i=index">
+                        <th style="font-size: x-small;padding: .25em;" scope="row">{{ (config.currentPage - 1) * config.itemsPerPage + i +1 }}</th>
+                        <th style="font-size: x-small;padding: .25em;" scope="row">{{data.depositMethod}}</th>
+                        <th style="font-size: x-small;padding: .25em;" scope="row">{{data.depositType}}</th>
+                        <th style="font-size: x-small;padding: .25em;" scope="row">{{data.donationBy}}</th>
+                        <th style="font-size: x-small;padding: .25em;" scope="row">{{data.studentId}}</th>
+                        <th style="font-size: x-small;padding: .25em;" scope="row">{{data.amount | number}}</th>
+                        <th style="font-size: x-small;padding: .25em;" scope="row">{{data.depositDate | date: 'yyyy-MM-dd'}}</th>
+                        <th style="font-size: x-small;padding: .25em;" scope="row"><button type="button" class="btn-primary"
+                                (click)="Edit(data.oid)"> <span class="glyphicon glyphicon-pencil"></span></button><button type="button" class="btn-primary"
+                                (click)="delete(data.oid)"> <span class="glyphicon glyphicon-trash"></span></button></th>
+                        
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalCenterTitle">Update Deposit Data</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" *ngIf="deposite">
+                    <form [formGroup]="UpdateForm" (ngSubmit)="onUpdate()">
+
+                        <div class="form-group">
+                            <input type="hidden" id="oid" class="form-control" formControlName="oid" required>
+
+                            <label for="depMethod">Deposit Method:</label>
+                            <select id="depMethod" class="form-control" formControlName="depositMethod">
+                                <option value="Cash">Cash</option>
+                                <option value="Check">Check</option>
+                                <option value="Card">Card</option>
+                            </select>
+
+                            <label for="depType">Deposit Type:</label>
+                            <select id="depType" disabled class="form-control" formControlName="depositType">
+                                <option value="Donation">Donation</option>
+                                <option value="Student Payment">Student Payment</option>
+                            </select>
+
+                            <label *ngIf="depType==='Student Payment'" for="studentId">Student Id:</label>
+                            <input *ngIf="depType==='Student Payment'" type="text" class="form-control"
+                                formControlName="studentId" id="studentId">
+                            <div
+                                *ngIf="getupdateForm.studentId.invalid && (getupdateForm.studentId.dirty || getupdateForm.studentId.touched)">
+                                <small *ngIf="getupdateForm.studentId.errors?.required"
+                                class="form-text text-danger">*Field is required</small>
+                            </div>
+                            <input *ngIf="depType==='Student Payment'" type="hidden" class="form-control"
+                                formControlName="donationBy" id="donationBy">
+
+                            <label *ngIf="depType==='Donation'" for="donationBy">Donation By:</label>
+                            <input *ngIf="depType==='Donation'" type="text" class="form-control"
+                                formControlName="donationBy" id="donationBy">
+                            <div
+                                *ngIf="getupdateForm.donationBy.invalid && (getupdateForm.donationBy.dirty || getupdateForm.donationBy.touched)">
+                                <small *ngIf="getupdateForm.donationBy.errors?.required"
+                                class="form-text text-danger">*Field is required</small>
+                            </div>
+                            <input *ngIf="depType==='Donation'" type="hidden" class="form-control"
+                                formControlName="studentId" id="studentId">
+
+                            <label for="amount">Amount:</label>
+                            <input type="text" class="form-control" formControlName="amount" id="amount">
+
+                            <div
+                                *ngIf="getupdateForm.amount.invalid && (getupdateForm.amount.dirty || getupdateForm.amount.touched)">
+                                <small *ngIf="getupdateForm.amount.errors?.required"
+                                    class="form-text text-danger">*Field is required</small>
+                            </div>
+                        </div>
+
+                        <div class="form-group text-center">
+                            <!-- <div *ngIf="getupdateForm.valid && errorMessageService.getMessage"
+                                class="pb-2 text-danger small">{{errorMessageService.getMessage}}</div> -->
+                            <button type="submit" class="btn btn-outline-primary">Save Changes</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Data Saved Successfully</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="failModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Data Saving failed</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Are you sure?</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" style="text-align: right">
+                    <button class="btn btn-primary" (click)="approveDelete()">Okay</button>
+                    <button class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="deleteSuccessModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Data Deleted Successfully</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="deleteFailModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Data Deletion Failed</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>

@@ -1,0 +1,64 @@
+<form [formGroup]="studentForm" (ngSubmit)="onSubmit()">
+    <div class="form-group row">
+    
+      <label for="name" class="col-sm-2 col-form-label" style="text-align: right;"> Name</label> <span class="form-text text-danger"> * </span>
+      <div class="col-sm-6">
+        <input type="text" class="form-control" id="name" placeholder="Name" [(ngModel)]="student.name" name="name" formControlName="name">
+      </div>
+      <div *ngIf="getStudentForm.name.invalid && (getStudentForm.name.dirty || getStudentForm.name.touched)">
+        <small *ngIf="getStudentForm.name.errors?.required" class="form-text text-danger"> Name  is Required</small>
+      </div>
+    </div>
+    
+    <div class="form-group row">
+      <label for="dob" class="col-sm-2 col-form-label" style="text-align: right;"> Date of Birth </label> <span class="form-text text-danger"> * </span>
+      <div class="col-sm-6">
+        <input type="date" class="form-control" id="dob" [(ngModel)]="student.dob" name="dob" formControlName="dob">
+        
+      </div>
+      <div *ngIf="getStudentForm.dob.invalid && (getStudentForm.dob.dirty || getStudentForm.dob.touched)">
+        <small *ngIf="getStudentForm.dob.errors?.required" class="form-text text-danger">Date is Required</small>
+      </div>
+    </div>
+    <fieldset class="form-group">
+      <div class="row">
+          <label class="col-form-label col-sm-2" style="text-align: right;">Gender</label><span class="form-text text-danger"> * </span>
+        
+        <div class="col-sm-6 form-check form-check-inline" style="margin-left: 15px;">
+            <input class="form-check-input" type="radio" name="gender" id="male" value="Male" [(ngModel)]="student.gender" [ngModelOptions]="{standalone: true}">
+            <label class="form-check-label" style="margin-right: 4px;" for="male">
+              Male
+            </label>
+            <input class="form-check-input" type="radio" name="gender" id="female" value="Female" [(ngModel)]="student.gender" [ngModelOptions]="{standalone: true}">
+            <label class="form-check-label" for="female">
+              Female
+            </label>
+        </div>
+      </div>
+    </fieldset>
+    
+    <div class="form-group row" *ngIf="!isValidDate">
+      <div class="col-sm-4">
+        <small style="color: red;">Please enter a valid date</small>
+      </div>
+    </div>
+    <div class="form-group row" *ngIf="!isNameValid">
+      <div class="col-sm-4">
+        <small style="color: red;">Please enter a valid name</small>
+      </div>
+    </div>
+    <div class="form-group row" *ngIf="isEmpty">
+      <div class="col-sm-4">
+        <small style="color: red;">Fields cannot be empty</small>
+      </div>
+    </div>
+
+    <div class="form-group row">
+      <div class="col-sm-5"></div>
+      <div class="col-sm-3" style="text-align: right">
+        <button type="reset" class="btn btn-danger" style="margin-right: 5px;">Reset</button>
+        <button type="submit" class="btn btn-primary">Submit</button>
+        
+      </div>
+    </div>
+</form>

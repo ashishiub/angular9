@@ -1,0 +1,68 @@
+<div class="panel panel-default">
+    <div class="panel-body"><h3><p>Finance Dashboard </p></h3> </div>
+</div>
+
+<!-- <div style="background-color: brown;"></div>
+<mat-slider min="1" max="100" step="1" value="1"></mat-slider>
+<h3>Basic Buttons</h3>
+<h3>Raised Buttons</h3> -->
+<!-- 
+<div class="example-button-row">
+  <button mat-raised-button>Basic</button>
+  <button mat-raised-button color="primary">Primary</button>
+  <button mat-raised-button color="accent">Accent</button>
+  <button mat-raised-button color="warn">Warn</button>
+  <button mat-raised-button disabled>Disabled</button>
+  <a mat-raised-button routerLink=".">Link</a>
+</div> -->
+
+
+
+
+
+
+<!-- <p *ngFor="let data of years">{{data.educationYear}}</p> -->
+<div class="row">
+    <label class="col-sm-2 col-form-label" style="text-align: right; font-size: larger;" for="depositType" class="col-sm-2 col-form-label"><b>Select Options </b></label>
+<select style="width: fit-content; margin: 5px;" class="form-control" >
+    <option value="Select"> School Name</option>
+    <option value="a-001">Aparna Charan</option>
+    <option value="b-001">Fauzdar Haat</option>
+    <option value="c-001">JamalKhan</option>
+</select>
+
+<select  style="width: fit-content; margin: 5px" class="form-control" >
+    <option value="Select">Select Branch</option>
+    <option value="a-01">Kazir Dewry</option>
+    <option value="a-02">Laal Khan Bazar</option>
+    <option value="a-03">G.E.C. Mor</option>
+</select>
+
+<select  style="width: fit-content; margin: 5px" class="form-control" >
+    <option value="Select">Select Year</option>
+    <option value="2018">2018</option>
+    <option value="2019">2019</option>
+    <option value="2020">2020</option>
+</select>
+<button class="btn btn-primary" style="margin: 1px;" (click)="showPieChart()">Show</button>
+<div>
+<div class="row" >
+
+    <div class="col-6">  
+        <chart [options]="options"></chart>
+    </div>
+
+    <div class="col-6" >
+        <chart [options]="paymentOptions_Chart"></chart>
+    </div>
+    <div class="col-6">
+        <chart [options]="cashin_PieChart"></chart>
+    </div>
+    
+    <div class="col-6">
+        <chart [options]="cashout_PieChart"></chart>
+    </div>
+
+    
+    
+</div>

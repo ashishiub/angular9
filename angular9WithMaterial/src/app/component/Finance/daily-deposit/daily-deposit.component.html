@@ -1,0 +1,96 @@
+<span class="form-inline">
+  <select class="form-control" #selectedLang (change)="switchLang(selectedLang.value)">
+      <option *ngFor="let language of translate.getLangs()" [value]="language" [selected]="language === translate.currentLang">
+          {{ language }}
+      </option>
+  </select>
+</span>
+
+<form [formGroup]="depositForm" (ngSubmit)="OnSubmit()">
+  <div class="form-group row">
+    <label class="col-sm-2 col-form-label" style="text-align: right;">{{'DepositMethod' | translate}}</label><span class="form-text text-danger"> * </span>
+    <div class="col-sm-6">
+      <select class="form-control" [(ngModel)]="deposit.depositMethod" [ngModelOptions]="{standalone: true}"
+        name="depositMethod">
+        <option selected>{{'Select' | translate}}</option>
+        <option value="Cash">{{'Cash' | translate}}</option>
+        <option value="Check">{{'Check' | translate}}</option>
+        <option value="Card">{{'Card' | translate}}</option>
+      </select>
+    </div>
+  </div>
+  <div class="form-group row">
+    <label for="depositType" class="col-sm-2 col-form-label" style="text-align: right;">{{'DepositType' | translate}}</label><span class="form-text text-danger"> * </span>
+    <div class="col-sm-6">
+      <select class="form-control" [(ngModel)]="deposit.depositType" [ngModelOptions]="{standalone: true}"
+        name="depositType">
+        <option selected>{{'Select' | translate}}</option>
+        <option value="Donation">{{'Donation' | translate}}</option>
+        <option value="Student Payment">{{'StudentPayment' | translate}}</option>
+      </select>
+    </div>
+  </div>
+  <div class="form-group row" *ngIf="deposit.depositType==='Student Payment'">
+    <label for="studentId" class="col-sm-2 col-form-label" style="text-align: right;">{{'StudentId' | translate}}</label><span class="form-text text-danger"> * </span>
+    <div class="col-sm-6">
+      <input type="text" class="form-control" id="studentId" placeholder="Student Id" [(ngModel)]="deposit.studentId"
+        name="studentId" formControlName="studentId" required>
+    </div>
+    <div
+      *ngIf="getDepositForm.studentId.invalid && (getDepositForm.studentId.dirty || getDepositForm.studentId.touched)">
+      <small *ngIf="getDepositForm.studentId.errors?.required" class="form-text text-danger">*Field is
+        required</small>
+    </div>
+  </div>
+  <div class="form-group row" *ngIf="deposit.depositType==='Donation'">
+    <label for="donationBy" class="col-sm-2 col-form-label" style="text-align: right;">{{'DonationBy' | translate}}</label><span class="form-text text-danger"> * </span>
+    <div class="col-sm-6">
+      <input type="text" class="form-control" id="donationBy" placeholder="Donation By" [(ngModel)]="deposit.donationBy"
+        name="donationBy" formControlName="donationBy" required>
+    </div>
+    <div
+      *ngIf="getDepositForm.donationBy.invalid && (getDepositForm.donationBy.dirty || getDepositForm.donationBy.touched)">
+      <small *ngIf="getDepositForm.donationBy.errors?.required" class="form-text text-danger">*Field is
+        required</small>
+    </div>
+  </div>
+  <div class="form-group row">
+    <label for="amount" class="col-sm-2 col-form-label" style="text-align: right;">{{'Amount' | translate}}</label><span class="form-text text-danger"> * </span>
+    <div class="col-sm-6">
+      <input type="text" class="form-control" id="amountString" placeholder="Amount" [(ngModel)]="deposit.amountString" name="amountString" formControlName="amountString" required>
+    </div>
+    <div
+      *ngIf="getDepositForm.amountString.invalid && (getDepositForm.amountString.dirty || getDepositForm.amountString.touched)">
+      <small *ngIf="getDepositForm.amountString.errors?.required" class="form-text text-danger">*Field is
+        required</small>
+    </div>
+  </div>
+
+  <div class="form-group row" *ngIf="!isValid">
+    <div class="col-sm-4">
+      <p style="color: red;">Please select an option</p>
+    </div>
+  </div>
+
+  <div class="form-group row" *ngIf="isEmpty">
+    <div class="col-sm-4">
+      <p style="color: red;">Fields must not be empty</p>
+    </div>
+  </div>
+
+  <div class="form-group row" *ngIf="!(isAmountInNumber && isAmountPositive)">
+    <div class="col-sm-4">
+      <p style="color: red;">Please select a valid amount</p>
+    </div>
+  </div>
+
+
+  <div class="form-group row">
+    <div class="col-sm-5"></div>
+    <div class="col-sm-3" style="text-align: right;">
+      <button type="reset" class="btn btn-danger" style="margin-right: 5px;">{{'Reset' | translate}}</button>
+      <button type="submit" class="btn btn-primary">{{'Submit' | translate}}</button>
+
+    </div>
+  </div>
+</form>

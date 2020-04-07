@@ -1,0 +1,15 @@
+{
+    "DepositMethod": "Deposit Method",
+    "DepositType": "Deposit Type",
+    "DonationBy": "Donation By",
+    "StudentId": "Student Id",
+    "Amount": "Amount",
+    "Cash": "Cash",
+    "Card": "Card",
+    "Check": "Check",
+    "Select": "Select",
+    "Reset": "Reset",
+    "Submit": "Submit",
+    "Donation": "Donation",
+    "StudentPayment": "Student Payment"
+}
